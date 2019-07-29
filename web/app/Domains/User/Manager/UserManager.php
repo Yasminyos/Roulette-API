@@ -1,21 +1,33 @@
 <?php
 
-
-namespace App\Domanins\User\Manager;
-
+namespace App\Domains\User\Manager;
 
 use App\Domains\User\DTO\UserCreateDTO;
+use App\Tools\Hash\HashManagerInterface;
 use App\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
 
 class UserManager
 {
-    public function create(UserCreateDTO $DTO)
+    /** @var HashManagerInterface */
+    private $hashManager;
+    
+    public function __construct(
+        HashManagerInterface $hashManager
+    ) {
+        $this->hashManager = $hashManager;
+    }
+    
+    public function create(UserCreateDTO $DTO): User
     {
         $DTO->validateThrowException();
         
         $user = new User();
         $user->email = $DTO->email;
+        $user->password = $this->hashManager->createHash($DTO->password);
+        
+        $user->save();
+        $user->refresh();
+        
+        return $user;
     }
 }
