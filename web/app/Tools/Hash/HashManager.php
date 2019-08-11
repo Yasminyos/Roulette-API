@@ -10,11 +10,19 @@ class HashManager implements HashManagerInterface
 {
     public function createHash(string $text): string
     {
-        return Hash::make($this->getSalt() . $text);
+        
+        return Hash::make($this->getWithSalt($text));
     }
     
-    private function getSalt(): string
+    public function checkEquals(string $text, string $hash): bool
     {
-        return getenv('HASH_SALT') ?: '';
+        return Hash::check($this->getWithSalt($text), $hash);
+    }
+    
+    private function getWithSalt(string $text): string
+    {
+        $salt = getenv('HASH_SALT') ?: '';
+        
+        return $salt . $text;
     }
 }

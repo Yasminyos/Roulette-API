@@ -52,4 +52,7 @@ $app->singleton(
 |
 */
 
+require __DIR__ . '/di/definitions.php';
+require __DIR__.'/di/singletons.php';
+
 return $app;

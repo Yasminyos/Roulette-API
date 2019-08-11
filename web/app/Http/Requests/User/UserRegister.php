@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 class UserRegister extends FormRequest
 {
@@ -16,7 +15,7 @@ class UserRegister extends FormRequest
     {
         return [
             'email' => 'string|required|unique:users|max:255|regex:/^.+@.+$/i',
-            'password' => 'string|required|min:8|'
+            'password' => 'string|required|min:8'
         ];
     }
 }

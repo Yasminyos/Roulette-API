@@ -1,18 +1,17 @@
 <?php
 
-
 namespace App\Tools\DTO;
 
 use Illuminate\Contracts\Validation\Validator as ValidatorResponse;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Illuminate\Validation\ValidationException;
 
-abstract class DtoAbstract
+abstract class AbstractDTO
 {
     /**
      * DtoAbstract constructor.
      *
-     * @param null $data
+     * @param  null  $data
      */
     public function __construct($data = null)
     {
@@ -36,13 +35,12 @@ abstract class DtoAbstract
         }
     }
     
-    
     public function validateThrowException(): void
     {
         $validator = $this->validate();
         
         if ($validator->fails()) {
-            throw new UnprocessableEntityHttpException(implode(' ', $validator->getMessageBag()->all()));
+            throw (new ValidationException($validator))->errorBag($validator->getMessageBag());
         }
     }
     

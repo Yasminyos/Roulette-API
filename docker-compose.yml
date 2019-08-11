@@ -26,7 +26,7 @@ services:
       - ./web:/var/www/html
     restart: always
 
-  mysqldb:
+  db:
     image: mysql:5.7.22
     container_name: ra-db
     ports:
@@ -42,6 +42,16 @@ services:
       - ./etc/db:/var/lib/mysql
     restart: always
 
+  redis:
+    image: redis:5.0.5
+    container_name: ra-redis
+    ports:
+      - 8000:6379
+    env_file:
+      - ./.env
+    environment:
+      - REDIS_PASS=${REDIS_PASSWORD}
+    restart: always
 
 
 
