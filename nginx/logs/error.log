@@ -1,0 +1,44 @@
+2019/07/28 19:07:01 [error] 6#6: *22 open() "/var/www/html/public/js/app.js" failed (2: No such file or directory), client: 172.23.0.1, server: localhost, request: "GET /js/app.js HTTP/1.1", host: "localhost:7070", referrer: "http://localhost:7070/login"
+2019/07/28 19:07:01 [error] 6#6: *23 open() "/var/www/html/public/css/app.css" failed (2: No such file or directory), client: 172.23.0.1, server: localhost, request: "GET /css/app.css HTTP/1.1", host: "localhost:7070", referrer: "http://localhost:7070/login"
+2019/08/03 13:12:30 [error] 6#6: *4 FastCGI sent in stderr: "PHP message: PHP Notice:  Undefined variable: app in /var/www/html/bootstrap/di/definitions.php on line 6PHP message: PHP Fatal error:  Uncaught Error: Call to a member function bind() on null in /var/www/html/bootstrap/di/definitions.php:6
+Stack trace:
+#0 /var/www/html/bootstrap/app.php(14): require()
+#1 /var/www/html/public/index.php(38): require_once('/var/www/html/b...')
+#2 {main}
+  thrown in /var/www/html/bootstrap/di/definitions.php on line 6" while reading response header from upstream, client: 172.23.0.1, server: localhost, request: "POST /api/register HTTP/1.1", upstream: "fastcgi://172.23.0.4:9000", host: "localhost:7070"
+2019/08/03 13:12:32 [error] 6#6: *4 FastCGI sent in stderr: "PHP message: PHP Notice:  Undefined variable: app in /var/www/html/bootstrap/di/definitions.php on line 6PHP message: PHP Fatal error:  Uncaught Error: Call to a member function bind() on null in /var/www/html/bootstrap/di/definitions.php:6
+Stack trace:
+#0 /var/www/html/bootstrap/app.php(14): require()
+#1 /var/www/html/public/index.php(38): require_once('/var/www/html/b...')
+#2 {main}
+  thrown in /var/www/html/bootstrap/di/definitions.php on line 6" while reading response header from upstream, client: 172.23.0.1, server: localhost, request: "POST /api/register HTTP/1.1", upstream: "fastcgi://172.23.0.4:9000", host: "localhost:7070"
+2019/08/10 18:21:12 [error] 6#6: *11 FastCGI sent in stderr: "PHP message: PHP Fatal error:  Declaration of App\Exceptions\Handler::render(Illuminate\Http\Request $request, Exception $exception) must be compatible with Illuminate\Foundation\Exceptions\Handler::render($request, Exception $e) in /var/www/html/app/Exceptions/Handler.php on line 12PHP message: PHP Fatal error:  Uncaught ReflectionException: Class App\Exceptions\Handler does not exist in /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('App\\Exceptions\\...')
+#1 /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('App\\Exceptions\\...')
+#2 /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(265): Illuminate\Container\Container->resolve('App\\Exceptions\\...', Array, false)
+#3 /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(787): Illuminate\Container\Container->Illuminate\Container\{closure}(Object(Illuminate\Foundation\Application), Array)
+#4 /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build(Object(Closure))
+#5 /var/www/html/vendor/laravel/framework/src/Illuminate in /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790" while reading response header from upstream, client: 172.21.0.1, server: localhost, request: "GET /api/test HTTP/1.1", upstream: "fastcgi://172.21.0.5:9000", host: "localhost:7070"
+2019/08/10 18:21:13 [error] 6#6: *17 FastCGI sent in stderr: "PHP message: PHP Fatal error:  Declaration of App\Exceptions\Handler::render(Illuminate\Http\Request $request, Exception $exception) must be compatible with Illuminate\Foundation\Exceptions\Handler::render($request, Exception $e) in /var/www/html/app/Exceptions/Handler.php on line 12PHP message: PHP Fatal error:  Uncaught ReflectionException: Class App\Exceptions\Handler does not exist in /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php:790
+Stack trace:
+#0 /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): ReflectionClass->__construct('App\\Exceptions\\...')
+#1 /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build('App\\Exceptions\\...')
+#2 /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(265): Illuminate\Container\Container->resolve('App\\Exceptions\\...', Array, false)
+#3 /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(787): Illuminate\Container\Container->Illuminate\Container\{closure}(Object(Illuminate\Foundation\Application), Array)
+#4 /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php(667): Illuminate\Container\Container->build(Object(Closure))
+#5 /var/www/html/vendor/laravel/framework/src/Illuminate in /var/www/html/vendor/laravel/framework/src/Illuminate/Container/Container.php on line 790" while reading response header from upstream, client: 172.21.0.1, server: localhost, request: "GET /api/test HTTP/1.1", upstream: "fastcgi://172.21.0.5:9000", host: "localhost:7070"
+2019/08/10 19:23:07 [error] 6#6: *81 FastCGI sent in stderr: "PHP message: PHP Fatal error:  Access level to App\Tools\Exception\AbstractException::$message must be protected (as in class Exception) or weaker in /var/www/html/app/Tools/Exception/AbstractException.php on line 9" while reading response header from upstream, client: 172.21.0.1, server: localhost, request: "GET /api/test HTTP/1.1", upstream: "fastcgi://172.21.0.5:9000", host: "localhost:7070"
+2019/08/10 20:44:33 [error] 6#6: *157 FastCGI sent in stderr: "PHP message: PHP Fatal error:  Uncaught TypeError: Argument 1 passed to validator() must be of the type array, string given, called in /var/www/html/app/Exceptions/Handler.php on line 60 and defined in /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php:942
+Stack trace:
+#0 /var/www/html/app/Exceptions/Handler.php(60): validator('Symfony\\Compone...')
+#1 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(112): App\Exceptions\Handler->render(Object(Illuminate\Http\Request), Object(Symfony\Component\Debug\Exception\FatalThrowableError))
+#2 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(89): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse(Object(Symfony\Component\Debug\Exception\FatalThrowableError))
+#3 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException(Object(Symfony\Component\Debug\Exception\FatalThrowableError))
+#4 {main}
+  thrown in /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php on line 942PHP message: PHP Fatal error:  Uncaught TypeError: Argument 1 passed to validator() must be of the type array, string given, called in /var/www/html/app/Exceptions/Handler.php on line 60 and defined in /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php:942
+Stack trace:
+#0 /var/www/html/app/Exceptions/Handler.php(60): validator('Symfony\\Compone...')
+#1 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(112): App\Exceptions\Handler->render(Object(Illuminate\Http\Request), Object(Symfony\Component\Debug\Exception\FatalErrorException))
+#2 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(89): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse(Object(Symfony\Component\Debug\Exception\FatalErrorException))
+#3 /var/www/html/vendor/larav

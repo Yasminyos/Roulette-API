@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Domains\Auth\DTO\TokenDTO;
 use App\Domains\Auth\DTO\UserLoginDTO;
 use App\Domains\Auth\Managers\AuthManager;
 use App\Http\Controllers\Controller;
@@ -21,13 +22,18 @@ class LoginController extends Controller
     
     /**
      * @param  UserLogin  $userLogin
-     * @return string
+     * @return TokenDTO
      * @throws Throwable
      */
-    public function login(UserLogin $userLogin): string
+    public function login(UserLogin $userLogin): TokenDTO
     {
         $DTO = new UserLoginDTO($userLogin->toArray());
         
         return $this->authManager->login($DTO);
+    }
+    
+    public function logout(): void
+    {
+        $this->authManager->logout();
     }
 }

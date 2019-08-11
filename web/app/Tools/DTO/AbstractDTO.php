@@ -20,6 +20,8 @@ abstract class AbstractDTO
         }
     }
     
+    abstract public function rules(): array;
+    
     /**
      * @param $data
      */
@@ -52,10 +54,13 @@ abstract class AbstractDTO
         return Validator::make($data, $rules);
     }
     
-    abstract public function rules(): array;
-    
     public function toArray(): array
     {
         return get_object_vars($this);
+    }
+    
+    public function __toString(): string
+    {
+        return (string) json_encode($this->toArray());
     }
 }

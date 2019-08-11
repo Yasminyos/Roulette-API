@@ -1,0 +1,21 @@
+actor: ApiTester
+modules:
+  enabled:
+    - \Helper\Api
+    - \Helper\Unit
+    - \Helper\Functional
+    - \Helper\Acceptance
+    - Asserts
+    - REST:
+        url: /api
+        depends: Laravel5
+        part: Json
+    - PhpBrowser:
+        url: http://localhost/
+        headers:
+          x-testing: 1
+          Content-Type: application/json
+
+  config:
+    - Laravel5:
+        environment_file: .env.testing

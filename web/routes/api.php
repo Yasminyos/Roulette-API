@@ -15,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', 'Auth\RegisterController@register');
 Route::post('login', 'Auth\LoginController@login');
+Route::delete('logout', 'Auth\LoginController@logout')->middleware('auth');
