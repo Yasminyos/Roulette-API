@@ -1,5 +1,6 @@
 .idea
 
 etc/db
+etc/redis
 etc/nginx/logs
 

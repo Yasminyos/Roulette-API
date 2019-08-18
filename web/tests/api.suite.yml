@@ -6,6 +6,7 @@ modules:
     - \Helper\Functional
     - \Helper\Acceptance
     - Asserts
+    - Fixture
     - REST:
         url: /api
         depends: Laravel5

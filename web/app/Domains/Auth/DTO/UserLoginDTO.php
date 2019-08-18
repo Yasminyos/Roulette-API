@@ -16,7 +16,7 @@ class UserLoginDTO extends AbstractDTO
     {
         return [
             'email' => 'string|required|max:255|regex:/^.+@.+$/i',
-            'password' => 'string|required|min:8'
+            'password' => 'string|required|min:8|max:255'
         ];
     }
 }
