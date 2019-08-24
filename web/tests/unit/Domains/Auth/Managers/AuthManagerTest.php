@@ -14,7 +14,6 @@ use App\Tools\Repositories\BaseRepositoryInterface;
 use Codeception\Test\Unit;
 use Faker\Factory;
 use Faker\Generator;
-use Throwable;
 
 class AuthManagerTest extends Unit
 {
@@ -41,22 +40,15 @@ class AuthManagerTest extends Unit
         if ($this->faker === null) {
             $this->faker = Factory::create();
             
-            $this->user = $this->make(User::class, [
+            $this->user = new User([
                 'id'       => $this->faker->randomNumber(),
                 'email'    => $this->faker->email,
                 'password' => $this->faker->password(8, 255)
             ]);
-            $this->loginDTO = $this->make(UserLoginDTO::class, [
-                'validateThrowException' => null,
-                'email'                  => $this->faker->email,
-                'password'               => $this->faker->password
-            ]);
-            $this->registerDTO = $this->make(UserRegisterDTO::class, [
-                'validateThrowException' => null,
-                'email'                  => $this->faker->email,
-                'password'               => $this->faker->password
-            ]);
             $this->token = $this->faker->password(60, 60);
+            
+            $this->loginDTO = new UserLoginDTO($this->user->toArray());
+            $this->registerDTO = new UserRegisterDTO($this->user->toArray());
             
             $this->dependencies = [
                 'userManager'        => $this->make(UserManager::class, ['getWhereEmail' => $this->user]),
@@ -71,14 +63,14 @@ class AuthManagerTest extends Unit
         
     }
     
-    public function testRegister(): void
-    {
-        
-        $result = $this->getObject($this->dependencies)->register($this->registerDTO);
-        $this->assertEquals($result->toArray(), [
-        
-        ]);
-    }
+//    public function testRegister(): void
+//    {
+//
+//        $result = $this->getObject($this->dependencies)->register($this->registerDTO);
+//        $this->assertEquals($result->toArray(), [
+//
+//        ]);
+//    }
     
     /**
      * @throws Throwable

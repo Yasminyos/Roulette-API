@@ -2,14 +2,21 @@
 
 namespace App\Tools\DTO;
 
-use Illuminate\Contracts\Validation\Validator as ValidatorResponse;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
+use App;
+use App\Tools\Instance\Instance;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
+use Illuminate\Contracts\Validation\Validator;
+use Validator as ValidatorFacade;
 
 abstract class AbstractDTO
 {
+    private $validatorFactory;
+    
+    private $validator;
+    
     /**
-     * DtoAbstract constructor.
+     * AbstractDTO constructor.
      *
      * @param  null  $data
      */
@@ -19,8 +26,6 @@ abstract class AbstractDTO
             $this->load($data);
         }
     }
-    
-    abstract public function rules(): array;
     
     /**
      * @param $data
@@ -37,30 +42,30 @@ abstract class AbstractDTO
         }
     }
     
-    public function validateThrowException(): void
-    {
-        $validator = $this->validate();
-        
-        if ($validator->fails()) {
-            throw (new ValidationException($validator))->errorBag($validator->getMessageBag());
-        }
-    }
-    
-    public function validate(): ValidatorResponse
+    public function validate(): bool
     {
         $data = get_object_vars($this);
         $rules = $this->rules();
         
-        return Validator::make($data, $rules);
+        $this->validator = ValidatorFacade::make($data, $rules);
+        
+        return !$this->validator->fails();
+    }
+
+    public function getValidator(): ?Validator
+    {
+        return $this->validator;
+    }
+
+    abstract public function rules(): array;
+    
+    public function __toString(): string
+    {
+        return (string) json_encode($this->toArray());
     }
     
     public function toArray(): array
     {
         return get_object_vars($this);
-    }
-    
-    public function __toString(): string
-    {
-        return (string) json_encode($this->toArray());
     }
 }

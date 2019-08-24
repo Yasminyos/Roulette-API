@@ -9,10 +9,10 @@ use App\Domains\Auth\Exceptions\InvalidPasswordException;
 use App\Domains\Auth\Repositories\ApiTokenRepositoryInterface;
 use App\Domains\User\Managers\UserManager;
 use App\Domains\User\Models\User;
+use App\Tools\Exception\DtoException;
 use App\Tools\Hash\HashManagerInterface;
 use App\Tools\Repositories\BaseRepositoryInterface;
 use Auth;
-use Throwable;
 
 class AuthManager
 {
@@ -43,10 +43,13 @@ class AuthManager
     /**
      * @param  UserRegisterDTO  $DTO
      * @return TokenDTO
+     * @throws DtoException
      */
     public function register(UserRegisterDTO $DTO): TokenDTO
     {
-        $DTO->validateThrowException();
+        if (!$DTO->validate()) {
+            throw new DtoException($DTO);
+        }
         
         $user = new User();
         $user->email = $DTO->email;
@@ -66,15 +69,20 @@ class AuthManager
     /**
      * @param  UserLoginDTO  $DTO
      * @return TokenDTO
-     * @throws Throwable
+     * @throws DtoException
      */
     public function login(UserLoginDTO $DTO): TokenDTO
     {
-        $DTO->validateThrowException();
+        if (!$DTO->validate()) {
+            throw new DtoException($DTO);
+        }
         
         $user = $this->userManager->getWhereEmail($DTO->email);
         $validPassword = $this->hashManager->checkEquals($DTO->password, $user->password);
-        throw_if(!$validPassword, new InvalidPasswordException());
+        
+        if (!$validPassword) {
+            throw new InvalidPasswordException();
+        }
         
         $token = $this->apiTokenRepository->getToken($user->id);
         

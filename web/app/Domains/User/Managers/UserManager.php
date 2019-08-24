@@ -22,13 +22,15 @@ class UserManager
     /**
      * @param  string  $userId
      * @return User
-     * @throws Throwable
      */
     public function get(string $userId): User
     {
         /** @var User $user */
         $user = $this->userRepository->findOneByPK($userId);
-        throw_if($user === null, new UserNotFoundException());
+    
+        if ($user === null) {
+            throw new UserNotFoundException();
+        }
         
         return $user;
     }
@@ -36,13 +38,15 @@ class UserManager
     /**
      * @param  string  $email
      * @return User
-     * @throws Throwable
      */
     public function getWhereEmail(string $email): User
     {
         /** @var User $user */
         $user = $this->userRepository->findOne(new EmailCriteria($email));
-        throw_if($user === null, new UserNotFoundException());
+        
+        if ($user === null) {
+            throw new UserNotFoundException();
+        }
         
         return $user;
     }
