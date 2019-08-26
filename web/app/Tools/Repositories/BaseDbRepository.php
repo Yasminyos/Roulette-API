@@ -19,25 +19,19 @@ class BaseDbRepository implements BaseRepositoryInterface
     /** @var Model */
     private $model;
     
-    /**
-     * @param  string  $modelClass
-     * @return BaseDbRepository
-     * @throws Throwable
-     */
     public function setModel(string $modelClass): BaseRepositoryInterface
     {
         $model = new $modelClass;
-        throw_if(!($model instanceof Model), new InvalidClassException('Class must instance of Model'));
+        
+        if (!($model instanceof Model)) {
+            throw new InvalidClassException('Class must instance of Model');
+        }
         
         $this->model = $model;
         
         return clone $this;
     }
     
-    /**
-     * @param  Model  $model
-     * @return bool
-     */
     public function save(Model $model): bool
     {
         return $model->save();
@@ -53,12 +47,6 @@ class BaseDbRepository implements BaseRepositoryInterface
         return $model->delete();
     }
     
-    /**
-     * @param $primaryKey
-     * @return Model|null
-     * @throws Throwable
-     * @throws NotFoundHttpException
-     */
     public function findOneByPK($primaryKey): ?Model
     {
         return $this->findOne(
@@ -66,35 +54,16 @@ class BaseDbRepository implements BaseRepositoryInterface
         );
     }
     
-    /**
-     * @param  CriteriaInterface  ...$criteria
-     * @return Model|null
-     * @throws Throwable
-     * @throws ModelNotFoundException
-     */
     public function findOne(CriteriaInterface ...$criteria): ?Model
     {
         return $this->getQuery(...$criteria)->first();
     }
     
-    /**
-     * @param  CriteriaInterface  ...$criteria
-     * @return Builder
-     * @throws Throwable
-     * @throws ModelNotFoundException
-     */
     public function getQuery(CriteriaInterface ...$criteria): Builder
     {
         return $this->applyCriteriaSet($this->initQuery(), ...$criteria);
     }
     
-    /**
-     * @param  Builder  $query
-     * @param  CriteriaInterface  ...$criteriaSet
-     * @return Builder
-     * @throws Throwable
-     * @throws InvalidModelForCriteriaException
-     */
     private function applyCriteriaSet(Builder $query, CriteriaInterface ...$criteriaSet): Builder
     {
         foreach ($criteriaSet as $criteria) {
@@ -105,29 +74,23 @@ class BaseDbRepository implements BaseRepositoryInterface
         return $query;
     }
     
-    /**
-     * @param  CriteriaInterface  $criteria
-     * @throws Throwable
-     * @throws InvalidModelForCriteriaException
-     */
+    
     private function lookupStrictCriteria(CriteriaInterface $criteria): void
     {
-        if ($criteria instanceof StrictCriteriaInterface) {
-            throw_if(
-                $criteria->getModelClass() !== get_class($this->getModel()),
-                new InvalidModelForCriteriaException($criteria)
-            );
+        if (
+            $criteria instanceof StrictCriteriaInterface
+            && $criteria->getModelClass() !== get_class($this->getModel())
+        ) {
+            throw new InvalidModelForCriteriaException($criteria);
         }
     }
     
-    /**
-     * @return Model
-     * @throws Throwable
-     * @throws ModelNotFoundException
-     */
+    
     private function getModel(): Model
     {
-        throw_if($this->model === null, new ModelNotFoundException());
+        if ($this->model === null) {
+            throw new ModelNotFoundException('Model not found');
+        }
         
         return $this->model;
     }
@@ -137,34 +100,17 @@ class BaseDbRepository implements BaseRepositoryInterface
         $criteria->applyTo($query);
     }
     
-    /**
-     * @return Builder
-     * @throws Throwable
-     * @throws ModelNotFoundException
-     */
     private function initQuery(): Builder
     {
         return $this->getModel()->newQuery();
     }
     
-    /**
-     * @param $primaryKeyValue
-     * @return CriteriaInterface
-     * @throws Throwable
-     * @throws ModelNotFoundException
-     */
     private function getPkCriteria($primaryKeyValue): CriteriaInterface
     {
         return new PrimaryKeyCriteria($primaryKeyValue, $this->getModel());
     }
     
-    /**
-     * @param $primaryKey
-     * @param  CriteriaInterface  ...$criteria
-     * @return Model|null
-     * @throws Throwable
-     * @throws ModelNotFoundException
-     */
+    
     public function findOneWithPK($primaryKey, CriteriaInterface ...$criteria): ?Model
     {
         $criteria[] = $this->getPkCriteria($primaryKey);
@@ -172,12 +118,6 @@ class BaseDbRepository implements BaseRepositoryInterface
         return $this->findOne(...$criteria);
     }
     
-    /**
-     * @param $primaryKey
-     * @return array
-     * @throws Throwable
-     * @throws ModelNotFoundException
-     */
     public function findAllByPK($primaryKey): array
     {
         return $this->findAll(
@@ -185,24 +125,11 @@ class BaseDbRepository implements BaseRepositoryInterface
         );
     }
     
-    /**
-     * @param  CriteriaInterface  ...$criteria
-     * @return array
-     * @throws Throwable
-     * @throws ModelNotFoundException
-     */
     public function findAll(CriteriaInterface ...$criteria): array
     {
         return $this->getQuery(...$criteria)->get()->all();
     }
     
-    /**
-     * @param $primaryKey
-     * @param  CriteriaInterface  ...$criteria
-     * @return array
-     * @throws Throwable
-     * @throws ModelNotFoundException
-     */
     public function findAllWithPK($primaryKey, CriteriaInterface ...$criteria): array
     {
         $criteria[] = $this->getPkCriteria($primaryKey);
@@ -210,13 +137,6 @@ class BaseDbRepository implements BaseRepositoryInterface
         return $this->findAll(...$criteria);
     }
     
-    /**
-     * @param $primaryKey
-     * @param  CriteriaInterface  ...$criteria
-     * @return Builder
-     * @throws Throwable
-     * @throws ModelNotFoundException
-     */
     public function getQueryWithPK($primaryKey, CriteriaInterface ...$criteria): Builder
     {
         $criteria[] = $this->getPkCriteria($primaryKey);
