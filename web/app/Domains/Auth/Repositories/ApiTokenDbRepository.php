@@ -8,7 +8,6 @@ use App\Domains\User\Criteria\UserIdCriteria;
 use App\Domains\User\Managers\UserManager;
 use App\Tools\Repositories\BaseRepositoryInterface;
 use Illuminate\Support\Str;
-use Throwable;
 
 class ApiTokenDbRepository implements ApiTokenRepositoryInterface
 {
@@ -42,11 +41,7 @@ class ApiTokenDbRepository implements ApiTokenRepositoryInterface
         return $apiToken !== null ? $apiToken->user_id : null;
     }
     
-    /**
-     * @param  int  $userId
-     * @return string
-     * @throws Throwable
-     */
+
     public function createToken(int $userId): string
     {
         $this->userManager->get($userId);

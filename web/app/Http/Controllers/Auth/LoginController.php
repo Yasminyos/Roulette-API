@@ -7,6 +7,8 @@ use App\Domains\Auth\DTO\UserLoginDTO;
 use App\Domains\Auth\Managers\AuthManager;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserLogin;
+use App\Tools\Exception\DtoException;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Throwable;
 
 class LoginController extends Controller
@@ -23,7 +25,8 @@ class LoginController extends Controller
     /**
      * @param  UserLogin  $userLogin
      * @return TokenDTO
-     * @throws Throwable
+     * @throws DtoException
+     * @throws BindingResolutionException
      */
     public function login(UserLogin $userLogin): TokenDTO
     {

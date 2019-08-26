@@ -7,6 +7,8 @@ use App\Domains\Auth\DTO\UserRegisterDTO;
 use App\Domains\Auth\Managers\AuthManager;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserRegister;
+use App\Tools\Exception\DtoException;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 class RegisterController extends Controller
 {
@@ -22,6 +24,8 @@ class RegisterController extends Controller
     /**
      * @param  UserRegister  $userRegister
      * @return TokenDTO
+     * @throws DtoException
+     * @throws BindingResolutionException
      */
     public function register(UserRegister $userRegister): TokenDTO
     {

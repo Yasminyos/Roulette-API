@@ -5,38 +5,55 @@ namespace App\Http\Middleware;
 use App\Domains\Auth\Exceptions\UnauthorizedException;
 use App\Domains\Auth\Managers\ApiTokenManager;
 use Closure;
+use Illuminate\Contracts\Auth\Factory;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Throwable;
 
 class AuthToken
 {
     /** @var ApiTokenManager */
     private $apiTokenManager;
     
+    /** @var StatefulGuard */
+    private $guard;
+    
     public function __construct(
-        ApiTokenManager $apiTokenManager
+        ApiTokenManager $apiTokenManager,
+        Factory $guard
     ) {
         $this->apiTokenManager = $apiTokenManager;
+        $this->guard = $guard;
     }
     
-    /**
-     * @param  Request  $request
-     * @param  Closure  $next
-     * @return mixed
-     * @throws Throwable
-     * @throws UnauthorizedException
-     */
     public function handle(Request $request, Closure $next)
     {
-        $token = $request->header('auth_token');
-        throw_if($token === null, new UnauthorizedException('Auth token not found'));
+        $token = $this->getToken($request);
+        $userId = $this->getUserIdByToken($token);
         
-        $userId = $this->apiTokenManager->getUserIdFromToken($token);
-        throw_if($userId === null, new UnauthorizedException('Auth token invalid'));
-        
-        Auth::loginUsingId($userId);
+        $this->guard->loginUsingId($userId);
         
         return $next($request);
+    }
+    
+    private function getToken(Request $request): string
+    {
+        $token = $request->header('auth_token');
+        
+        if ($token === null) {
+            throw new UnauthorizedException('Auth token not found');
+        }
+        
+        return $token;
+    }
+    
+    private function getUserIdByToken(string $token): int
+    {
+        $userId = $this->apiTokenManager->getUserIdFromToken($token);
+        
+        if ($userId === null) {
+            throw new UnauthorizedException('Auth token invalid');
+        }
+        
+        return $userId;
     }
 }
